@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hiyerarşik Seçim</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet">
+    <style>
+        .tree-view {
+            max-height: 600px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+        }
+        .tree-item {
+            margin-left: 20px;
+            margin-bottom: 5px;
+        }
+        .tree-item input[type="checkbox"] {
+            margin-right: 5px;
+        }
+        .search-box {
+            margin-bottom: 15px;
+        }
+        .support-content {
+            display: none;
+            margin-left: 20px;
+        }
+        .support-content.visible {
+            display: block;
+        }
+        .support-header {
+            cursor: pointer;
+            color: #0d6efd;
+            padding: 5px 0;
+            display: block;
+            margin-bottom: 5px;
+        }
+        .support-header:hover {
+            text-decoration: underline;
+        }
+        .support-header::before {
+            content: '▶';
+            display: inline-block;
+            margin-right: 5px;
+            transition: transform 0.2s;
+        }
+        .support-header.expanded::before {
+            transform: rotate(90deg);
+        }
+        .main-category {
+            border: 1px solid #dee2e6;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 6px;
+            background-color: white;
+        }
+        .main-category > label {
+            font-weight: 500;
+            color: #212529;
+        }
+        .select2-container--default .select2-search--dropdown .select2-search__field::placeholder {
+            color: #6c757d;
+        }
+        h2 {
+            color: #0d6efd;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+<div class="container mt-4">
+    <h2>1. Arama Yapılabilen Checkbox Ağacı</h2>
+    <div class="search-box">
+        <input type="text" id="searchInput" class="form-control" placeholder="Ara...">
+    </div>
+    <div class="tree-view" id="checkboxTree">
+        <div class="tree-item">
+            <input type="checkbox" id="bakanlik">
+            <label for="bakanlik">Aile ve Sosyal Hizmetler Bakanlığı</label>
+            <div class="main-category">
+                <input type="checkbox" id="sube">
+                <label for="sube">Şube</label>
+                <div class="tree-item">
+                    <div class="support-header">Sosyal</div>
+                    <div class="support-content">
+                        <div class="tree-item">
+                            <input type="checkbox" id="sosyal_bilgi">
+                            <label for="sosyal_bilgi">Bilgi Edinme</label>
+                        </div>
+                        <div class="tree-item">
+                            <input type="checkbox" id="sosyal_anlatim">
+                            <label for="sosyal_anlatim">Yaşadıklarını Anlatmak</label>
+                        </div>
+                        <div class="tree-item">
+                            <input type="checkbox" id="sosyal_egitim">
+                            <label for="sosyal_egitim">Eğitimle İlgili Destekler</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="tree-item">
+                    <div class="support-header">Hukuki ve Adli</div>
+                    <div class="support-content">
+                        <div class="tree-item">
+                            <input type="checkbox" id="hukuki_danismanlik">
+                            <label for="hukuki_danismanlik">Hukuki Danışmanlık</label>
+                        </div>
+                        <div class="tree-item">
+                            <input type="checkbox" id="tutanak_tutma">
+                            <label for="tutanak_tutma">Tutanak Tutma</label>
+                        </div>
+                        <div class="tree-item">
+                            <div class="support-header">6284 Sayılı Kanun Kapsamında Sunulan Hizmetler</div>
+                            <div class="support-content">
+                                <div class="tree-item">
+                                    <input type="checkbox" id="sube_hukuki_6284_barinma">
+                                    <label for="sube_hukuki_6284_barinma">6284- Barınma Yeri Sağlandı</label>
+                                </div>
+                                <div class="tree-item">
+                                    <input type="checkbox" id="sube_hukuki_6284_koruma">
+                                    <label for="sube_hukuki_6284_koruma">6284- Geçici Koruma Kararı</label>
+                                </div>
+                                <div class="tree-item">
+                                    <input type="checkbox" id="sube_hukuki_6284_gizlilik">
+                                    <label for="sube_hukuki_6284_gizlilik">6284- Gizlilik Kararı</label>
+                                </div>
+                                <div class="tree-item">
+                                    <input type="checkbox" id="sube_hukuki_6284_yaklasma">
+                                    <label for="sube_hukuki_6284_yaklasma">6284- Yakınlara ve çocuklara yaklaşmama kararı</label>
+                                </div>
+                                <div class="tree-item">
+                                    <input type="checkbox" id="sube_hukuki_6284_konut">
+                                    <label for="sube_hukuki_6284_konut">6284- Konuta, Okula, İşyerine Yaklaşmama Kararı</label>
+                                </div>
+                                <div class="tree-item">
+                                    <input type="checkbox" id="sube_hukuki_6284_uzaklastirma">
+                                    <label for="sube_hukuki_6284_uzaklastirma">6284- Müşterek Konuttan Uzaklaştırma, Konut Tahsisi Kararı</label>
+                                </div>
+                                <div class="tree-item">
+                                    <input type="checkbox" id="sube_hukuki_6284_maddi">
+                                    <label for="sube_hukuki_6284_maddi">6284- Geçici Maddi Yardım Sağlanma</label>
+                                </div>
+                                <div class="tree-item">
+                                    <input type="checkbox" id="sube_hukuki_6284_saglik">
+                                    <label for="sube_hukuki_6284_saglik">6284- Genel Sağlık Sigortası'ndan Yararlanma</label>
+                                </div>
+                                <div class="tree-item">
+                                    <input type="checkbox" id="sube_hukuki_6284_velayet">
+                                    <label for="sube_hukuki_6284_velayet">6284- Geçici Velayet</label>
+                                </div>
+                                <div class="tree-item">
+                                    <input type="checkbox" id="sube_hukuki_6284_nafaka">
+                                    <label for="sube_hukuki_6284_nafaka">6284- Geçici Nafaka</label>
+                                </div>
+                                <div class="tree-item">
+                                    <input type="checkbox" id="sube_hukuki_6284_koruma_tahsis">
+                                    <label for="sube_hukuki_6284_koruma_tahsis">6284- Yakın Koruma Tahsisi</label>
+                                </div>
+                                <div class="tree-item">
+                                    <input type="checkbox" id="sube_hukuki_6284_diger">
+                                    <label for="sube_hukuki_6284_diger">6284- Diğer</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tree-item">
+                            <input type="checkbox" id="sikayet">
+                            <label for="sikayet">Şikayette Bulunma</label>
+                        </div>
+                        <div class="tree-item">
+                            <input type="checkbox" id="delil_toplama">
+                            <label for="delil_toplama">Olayla İlgili Delilleri Toplama</label>
+                        </div>
+                        <div class="tree-item">
+                            <input type="checkbox" id="hukuk_davasi">
+                            <label for="hukuk_davasi">Hukuk Davası (Boşanma, Velayet, Nafaka, Miras, Tazminat, Konut Tahsisi) Açma</label>
+                        </div>
+                        <div class="tree-item">
+                            <input type="checkbox" id="ceza_davasi">
+                            <label for="ceza_davasi">Ceza Davası Açma</label>
+                        </div>
+                        <div class="tree-item">
+                            <input type="checkbox" id="diger_dava">
+                            <label for="diger_dava">Diğer Dava Açma</label>
+                        </div>
+                        <div class="tree-item">
+                            <input type="checkbox" id="ucretsiz_avukat">
+                            <label for="ucretsiz_avukat">Ücretsiz Avukat Desteği</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="tree-item">
+                    <div class="support-header">Psikolojik</div>
+                    <div class="support-content">
+                        <div class="tree-item">
+                            <input type="checkbox" id="psikolojik_destek">
+                            <label for="psikolojik_destek">Psikolojik Destek ve Danışmanlık</label>
+                        </div>
+                        <div class="tree-item">
+                            <input type="checkbox" id="psikolojik_cocuk">
+                            <label for="psikolojik_cocuk">Çocuğuna/Çocuklarına Psikolojik Destek</label>
+                        </div>
+                        <div class="tree-item">
+                            <input type="checkbox" id="psikolojik_fail">
+                            <label for="psikolojik_fail">Faile Psikolojik Destek</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="tree-item">
+                    <div class="support-header">Sağlık</div>
+                    <div class="support-content">
+                        <div class="tree-item">
+                            <input type="checkbox" id="saglik_tani">
+                            <label for="saglik_tani">Tanı ve Tedavi Hizmetleri</label>
+                        </div>
+                        <div class="tree-item">
+                            <input type="checkbox" id="saglik_kurtaj">
+                            <label for="saglik_kurtaj">Kürtaj Hizmeti</label>
+                        </div>
+                        <div class="tree-item">
+                            <input type="checkbox" id="saglik_darp">
+                            <label for="saglik_darp">Darp Raporu</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="tree-item">
+                    <div class="support-header">Ekonomik</div>
+                    <div class="support-content">
+                        <div class="tree-item">
+                            <input type="checkbox" id="ekonomik_maddi">
+                            <label for="ekonomik_maddi">Maddi Yardım</label>
+                        </div>
+                        <div class="tree-item">
+                            <input type="checkbox" id="ekonomik_ayni">
+                            <label for="ekonomik_ayni">Ayni Yardım</label>
+                        </div>
+                        <div class="tree-item">
+                            <input type="checkbox" id="ekonomik_is">
+                            <label for="ekonomik_is">İş Bulma</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="main-category">
+                <input type="checkbox" id="siginak">
+                <label for="siginak">Sığınak</label>
+                <div class="support-content">
+                    <div class="tree-item">
+                        <input type="checkbox" id="siginak_yonlendirme">
+                        <label for="siginak_yonlendirme">Sığınağa Yönlendirme</label>
+                    </div>
+                    <div class="tree-item">
+                        <input type="checkbox" id="siginak_refakat">
+                        <label for="siginak_refakat">Sığınağa Gidişte Refakat</label>
+                    </div>
+                    <div class="tree-item">
+                        <input type="checkbox" id="siginak_kabul">
+                        <label for="siginak_kabul">Sığınak Kabulü</label>
+                    </div>
+                </div>
+            </div>
+            <div class="main-category">
+                <input type="checkbox" id="sosyalMerkez">
+                <label for="sosyalMerkez">Sosyal Hizmet Merkezi</label>
+                <div class="support-content">
+                    <div class="tree-item">
+                        <input type="checkbox" id="sosyal_merkez_bilgi">
+                        <label for="sosyal_merkez_bilgi">Bilgi Edinme</label>
+                    </div>
+                    <div class="tree-item">
+                        <input type="checkbox" id="sosyal_merkez_egitim">
+                        <label for="sosyal_merkez_egitim">Eğitimle İlgili Destekler</label>
+                    </div>
+                    <div class="tree-item">
+                        <input type="checkbox" id="sosyal_merkez_mesleki">
+                        <label for="sosyal_merkez_mesleki">Mesleki Destekler</label>
+                    </div>
+                </div>
+            </div>
+            <div class="main-category">
+                <input type="checkbox" id="alo183">
+                <label for="alo183">Alo 183</label>
+                <div class="support-content">
+                    <div class="tree-item">
+                        <input type="checkbox" id="alo183_yonlendirme">
+                        <label for="alo183_yonlendirme">Yönlendirme</label>
+                    </div>
+                    <div class="tree-item">
+                        <input type="checkbox" id="alo183_bilgi">
+                        <label for="alo183_bilgi">Bilgi Edinme</label>
+                    </div>
+                </div>
+            </div>
+            <div class="main-category">
+                <input type="checkbox" id="diger">
+                <label for="diger">Diğer</label>
+            </div>
+        </div>
+    </div>
+
+    <h2 class="mt-4">2. Hiyerarşik Dropdown</h2>
+    <select id="hierarchicalSelect" class="form-select" style="width: 100%;">
+        <option value="">Seçiniz...</option>
+        <optgroup label="Aile ve Sosyal Hizmetler Bakanlığı">
+        <optgroup label="Şube">
+        <optgroup label="Sosyal">
+            <option value="sosyal_bilgi">Bilgi Edinme</option>
+            <option value="sosyal_anlatim">Yaşadıklarını Anlatmak</option>
+            <option value="sosyal_egitim">Eğitimle İlgili Destekler</option>
+        </optgroup>
+        <optgroup label="Hukuki ve Adli">
+            <option value="hukuki_danismanlik">Hukuki Danışmanlık</option>
+            <option value="tutanak_tutma">Tutanak Tutma</option>
+        <optgroup label="6284 Sayılı Kanun Kapsamında Sunulan Hizmetler">
+            <option value="sube_hukuki_6284_barinma">6284- Barınma Yeri Sağlandı</option>
+            <option value="sube_hukuki_6284_koruma">6284- Geçici Koruma Kararı</option>
+            <option value="sube_hukuki_6284_gizlilik">6284- Gizlilik Kararı</option>
+            <option value="sube_hukuki_6284_yaklasma">6284- Yakınlara ve çocuklara yaklaşmama kararı</option>
+            <option value="sube_hukuki_6284_konut">6284- Konuta, Okula, İşyerine Yaklaşmama Kararı</option>
+            <option value="sube_hukuki_6284_uzaklastirma">6284- Müşterek Konuttan Uzaklaştırma, Konut Tahsisi Kararı</option>
+            <option value="sube_hukuki_6284_maddi">6284- Geçici Maddi Yardım Sağlanma</option>
+            <option value="sube_hukuki_6284_saglik">6284- Genel Sağlık Sigortası'ndan Yararlanma</option>
+            <option value="sube_hukuki_6284_velayet">6284- Geçici Velayet</option>
+            <option value="sube_hukuki_6284_nafaka">6284- Geçici Nafaka</option>
+            <option value="sube_hukuki_6284_koruma_tahsis">6284- Yakın Koruma Tahsisi</option>
+            <option value="sube_hukuki_6284_diger">6284- Diğer</option>
+        </optgroup>
+        <option value="sikayet">Şikayette Bulunma</option>
+        <option value="delil_toplama">Olayla İlgili Delilleri Toplama</option>
+        <option value="hukuk_davasi">Hukuk Davası (Boşanma, Velayet, Nafaka, Miras, Tazminat, Konut Tahsisi) Açma</option>
+        <option value="ceza_davasi">Ceza Davası Açma</option>
+        <option value="diger_dava">Diğer Dava Açma</option>
+        <option value="ucretsiz_avukat">Ücretsiz Avukat Desteği</option>
+        </optgroup>
+        <optgroup label="Psikolojik">
+            <option value="psikolojik_destek">Psikolojik Destek ve Danışmanlık</option>
+            <option value="psikolojik_cocuk">Çocuğuna/Çocuklarına Psikolojik Destek</option>
+            <option value="psikolojik_fail">Faile Psikolojik Destek</option>
+        </optgroup>
+        <optgroup label="Sağlık">
+            <option value="saglik_tani">Tanı ve Tedavi Hizmetleri</option>
+            <option value="saglik_kurtaj">Kürtaj Hizmeti</option>
+            <option value="saglik_darp">Darp Raporu</option>
+        </optgroup>
+        <optgroup label="Ekonomik">
+            <option value="ekonomik_maddi">Maddi Yardım</option>
+            <option value="ekonomik_ayni">Ayni Yardım</option>
+            <option value="ekonomik_is">İş Bulma</option>
+        </optgroup>
+        <optgroup label="Sığınak">
+            <option value="siginak_yonlendirme">Sığınağa Yönlendirme</option>
+            <option value="siginak_refakat">Sığınağa Gidişte Refakat</option>
+            <option value="siginak_kabul">Sığınak Kabulü</option>
+        </optgroup>
+        <optgroup label="Diğer">
+            <option value="diger_ozel">Diğer (Açıklayınız)</option>
+        </optgroup>
+        </optgroup>
+        <optgroup label="Sığınak">
+            <option value="siginak_yonlendirme">Sığınağa Yönlendirme</option>
+            <option value="siginak_refakat">Sığınağa Gidişte Refakat</option>
+            <option value="siginak_kabul">Sığınak Kabulü</option>
+        </optgroup>
+        <optgroup label="Sosyal Hizmet Merkezi">
+            <option value="sosyal_bilgi">Bilgi Edinme</option>
+            <option value="sosyal_egitim">Eğitimle İlgili Destekler</option>
+            <option value="sosyal_mesleki">Mesleki Destekler</option>
+        </optgroup>
+        <optgroup label="Alo 183">
+            <option value="alo183_yonlendirme">Yönlendirme</option>
+            <option value="alo183_bilgi">Bilgi Edinme</option>
+        </optgroup>
+        <option value="diger">Diğer</option>
+        </optgroup>
+    </select>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script>
+    // Checkbox ağacı için arama fonksiyonu
+    $('#searchInput').on('keyup', function() {
+        var value = $(this).val().toLowerCase();
+        $('.tree-item').each(function() {
+            var text = $(this).text().toLowerCase();
+            $(this).toggle(text.indexOf(value) > -1);
+        });
+    });
+
+    // Destek başlıklarına tıklama fonksiyonu
+    $(document).on('click', '.support-header', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        $(this).toggleClass('expanded');
+        $(this).next('.support-content').slideToggle(200);
+    });
+
+    // Hiyerarşik dropdown için Select2 başlatma
+    $(document).ready(function() {
+        $('#hierarchicalSelect').select2({
+            placeholder: 'Arama yapabilirsiniz...',
+            allowClear: true,
+            language: {
+                searching: function() {
+                    return "Arama yapabilirsiniz...";
+                }
+            }
+        });
+    });
+</script>
+</body>
+</html> 
